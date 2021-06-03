@@ -1,0 +1,181 @@
+@extends('layouts.app')
+
+@section('title', 'Calendarios'.' | '.config('app.name'))
+
+@section('style')
+<link href="{{asset('css/plugins/datapicker/datepicker3.css')}}" rel="stylesheet">
+@endsection
+
+@section('content')
+
+<!-- begin:: Subheader -->
+<div class="kt-subheader   kt-grid__item" id="kt_subheader">
+    <div class="kt-container  kt-container--fluid ">
+        <div class="kt-subheader__main">
+            <h3 class="kt-subheader__title">
+                Dashboard </h3>
+            <span class="kt-subheader__separator kt-hidden"></span>
+            <div class="kt-subheader__breadcrumbs">
+                <a href="{{ url ('calendarios')}}" class="kt-subheader__breadcrumbs-home"><i class="flaticon2-shelter"></i></a>
+                <span class="kt-subheader__breadcrumbs-separator"></span>
+                <a href="{{ url ('calendarios')}}" class="kt-subheader__breadcrumbs-link">
+                Calendarios </a>
+                <span class="kt-subheader__breadcrumbs-separator"></span>
+                <a href="" class="kt-subheader__breadcrumbs-link">
+                    Crear </a>
+
+                <!-- <span class="kt-subheader__breadcrumbs-link kt-subheader__breadcrumbs-link--active">Active link</span> -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- end:: Subheader -->
+
+<!-- begin:: Content -->
+<div class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid">
+@if ($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
+    <div class="row">
+        <div class="col-lg-12">
+            <!--begin::Portlet-->
+            <div class="kt-portlet kt-portlet--last kt-portlet--head-lg kt-portlet--responsive-mobile" id="kt_page_portlet">
+                <div class="kt-portlet__head kt-portlet__head--lg">
+                    <div class="kt-portlet__head-label">
+                        <h3 class="kt-portlet__head-title">Ingresa la información <small>** obligatorio</small></h3>
+                    </div>
+                </div>
+                <div class="kt-portlet__body">
+                    <form method="post" class="form-horizontal" action="{{ url('/calendarios/store')}}" autocomplete="off">
+                    {{ csrf_field()}}
+                        <div class="row">
+                            <div class="col-xl-3"></div>
+                            <div class="col-xl-6">
+                                <div class="kt-section kt-section--first">
+                                    <div class="kt-section__body">  
+
+                                        <div class="form-group form-show-validation row" id="data_1">
+                                            <label class="col-3 col-form-label">Fecha</label>
+                                            <div class="col-9">
+                                            <div class="input-group date">
+                                                <span class="input-group-addon"></span>
+                                                <input type="text" class="form-control" id="fecha" name="fecha" value="{{ old('fecha', $data->fecha) }}" readonly="readonly">
+                                            </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group row">
+                                            <label class="col-3 col-form-label">mss_ano</label>
+                                            <div class="col-9">
+                                            <input type="text" class="form-control" id="mss_ano" name="mss_ano" value="{{ old('mss_ano', $data->mss_ano) }}" required="">
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group row">
+                                            <label class="col-3 col-form-label">mss_mes</label>
+                                            <div class="col-9">
+                                            <input type="text" class="form-control" id="mss_mes" name="mss_mes" value="{{ old('mss_mes', $data->mss_mes) }}" required="">
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group row">
+                                            <label class="col-3 col-form-label">cld_esfuerzo_dia</label>
+                                            <div class="col-9">
+                                            <input type="text" class="form-control" id="cld_esfuerzo_dia" name="cld_esfuerzo_dia" value="{{ old('cld_esfuerzo_dia', $data->cld_esfuerzo_dia) }}" required="">
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group row">
+                                            <label class="col-3 col-form-label">cld_habil</label>
+                                            <div class="col-9">
+                                            <input type="text" class="form-control" id="cld_habil" name="cld_habil" value="{{ old('cld_habil', $data->cld_habil) }}" required="">
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group row">
+                                            <label class="col-3 col-form-label">cld_nombre_dia</label>
+                                            <div class="col-9">
+                                            <input type="text" class="form-control" id="cld_nombre_dia" name="cld_nombre_dia" value="{{ old('cld_nombre_dia', $data->cld_nombre_dia) }}" required="">
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group row">
+                                            <label class="col-3 col-form-label">cld_semana</label>
+                                            <div class="col-9">
+                                            <input type="text" class="form-control" id="cld_semana" name="cld_semana" value="{{ old('cld_semana', $data->cld_semana) }}" required="">
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group row">
+                                            <label class="col-3 col-form-label">cld_sem_mes</label>
+                                            <div class="col-9">
+                                            <input type="text" class="form-control" id="cld_sem_mes" name="cld_sem_mes" value="{{ old('cld_sem_mes', $data->cld_sem_mes) }}" required="">
+                                            </div>
+                                        </div>
+
+                                        <div class="kt-separator kt-separator--border-dashed kt-separator--space-lg"></div>
+                                        <div class="kt-form__actions">
+                                            <button type="submit" class="btn btn-primary">Actualizar</button>
+                                            <a href="{{ url ('calendarios')}}" class="btn btn-secondary">Cancelar</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                            <div class="col-xl-3"></div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!--end::Portlet-->
+        </div>
+    </div>
+</div>
+
+<!-- end:: Content -->
+
+@endsection
+    
+@section('scripts')
+
+<!-- Data picker -->
+<script src="{{asset('js/plugins/datapicker/bootstrap-datepicker.js')}}"></script>
+
+<!-- Date range use moment.js same as full calendar plugin -->
+<script src="{{asset('js/plugins/fullcalendar/moment.min.js')}}"></script>
+
+<!-- Date range picker -->
+<script src="{{asset('js/plugins/daterangepicker/daterangepicker.js')}}"></script>
+
+<script>
+    $(document).ready(function(){
+
+        $('#data_1 .input-group.date').datepicker({
+            todayBtn: "linked",
+            keyboardNavigation: false,
+            forceParse: false,
+            calendarWeeks: true,
+            autoclose: true
+        });
+    });       
+
+</script>
+
+<script>
+$(document).ready(function(){
+
+    $('.summernote').summernote();
+
+});
+</script>
+
+
+@endsection
