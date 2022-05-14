@@ -6,30 +6,49 @@ use App\Comunicados;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use App\Traits\Funciones;
 use DB;
 
 
 class ComunicadosController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    use Funciones;
+
     public function index()
     {
-       $data = DB::table('comunicados')
+        $permiso = $this->permisos(Auth::id()); 
+
+        if($permiso == 1)
+        {
+            $data = DB::table('comunicados')
                 ->leftJoin('conjuntos', 'comunicados.conjunto_id', '=', 'conjuntos.id')
                 ->leftJoin('users', 'comunicados.user_create', '=', 'users.id')
                 ->leftJoin('users as users2', 'comunicados.user_update', '=', 'users2.id')
                 ->select(
-                'comunicados.*',
-                'conjuntos.nombre AS nomconjunto',
-                DB::raw('CONCAT(users.name, " " ,users.last) AS creo'),
-                DB::raw('CONCAT(users2.name, " " ,users2.last) AS actualizo'))
+                        'comunicados.*',
+                        'conjuntos.nombre AS nomconjunto',
+                        DB::raw('CONCAT(users.name, " " ,users.last) AS creo'),
+                        DB::raw('CONCAT(users2.name, " " ,users2.last) AS actualizo'))
                 ->where('comunicados.status','<>',3 )
                 ->orderByRaw('comunicados.created_at ASC')
                 ->get();
+        }
+        elseif($permiso == 2)
+        {
+            $data = DB::table('comunicados')
+                ->leftJoin('conjuntos', 'comunicados.conjunto_id', '=', 'conjuntos.id')
+                ->leftJoin('users', 'comunicados.user_create', '=', 'users.id')
+                ->leftJoin('users as users2', 'comunicados.user_update', '=', 'users2.id')
+                ->select(
+                        'comunicados.*',
+                        'conjuntos.nombre AS nomconjunto',
+                        DB::raw('CONCAT(users.name, " " ,users.last) AS creo'),
+                        DB::raw('CONCAT(users2.name, " " ,users2.last) AS actualizo'))
+                ->where('comunicados.conjunto_id', Auth::user()->conjunto_id)
+                ->where('comunicados.status','<>',3 )
+                ->orderByRaw('comunicados.created_at ASC')
+                ->get();
+        }        
 
         return view ('comunicados.index')->with (compact('data'));
     }
@@ -217,19 +236,41 @@ class ComunicadosController extends Controller
 
     public function ver()
     {
+        $permiso = $this->permisos(Auth::id()); 
 
-        $data = DB::table('comunicados')
+        if($permiso == 1)
+        {
+            $data = DB::table('comunicados')
                 ->leftJoin('conjuntos', 'comunicados.conjunto_id', '=', 'conjuntos.id')
                 ->leftJoin('users', 'comunicados.user_create', '=', 'users.id')
                 ->leftJoin('users as users2', 'comunicados.user_update', '=', 'users2.id')
                 ->select(
-                'comunicados.*',
-                'conjuntos.nombre AS nomconjunto',
-                DB::raw('CONCAT(users.name, " " ,users.last) AS creo'),
-                DB::raw('CONCAT(users2.name, " " ,users2.last) AS actualizo'))
+                        'comunicados.*',
+                        'conjuntos.nombre AS nomconjunto',
+                        DB::raw('CONCAT(users.name, " " ,users.last) AS creo'),
+                        DB::raw('CONCAT(users2.name, " " ,users2.last) AS actualizo'))
                 ->where('comunicados.status','<>',3 )
                 ->orderByRaw('comunicados.created_at ASC')
                 ->get();
+        }
+        elseif($permiso == 2)
+        {
+            $data = DB::table('comunicados')
+                ->leftJoin('conjuntos', 'comunicados.conjunto_id', '=', 'conjuntos.id')
+                ->leftJoin('users', 'comunicados.user_create', '=', 'users.id')
+                ->leftJoin('users as users2', 'comunicados.user_update', '=', 'users2.id')
+                ->select(
+                        'comunicados.*',
+                        'conjuntos.nombre AS nomconjunto',
+                        DB::raw('CONCAT(users.name, " " ,users.last) AS creo'),
+                        DB::raw('CONCAT(users2.name, " " ,users2.last) AS actualizo'))
+                ->where('comunicados.conjunto_id', Auth::user()->conjunto_id)
+                ->where('comunicados.status','<>',3 )
+                ->orderByRaw('comunicados.created_at ASC')
+                ->get();
+        }
+
+        
 
         return view ('comunicados.ver')->with(compact('data'));
     }

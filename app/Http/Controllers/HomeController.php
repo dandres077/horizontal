@@ -28,7 +28,7 @@ class HomeController extends Controller
                 ->leftJoin('vinculos_conjuntos', 'vinculos.id', '=', 'vinculos_conjuntos.vinculo_id')
                 ->select('vinculos.*')
                 ->where('vinculos.ubicacion', '1')
-                ->where('vinculos_conjuntos.conjunto_id', '1')
+                ->where('vinculos_conjuntos.conjunto_id', Auth::user()->conjunto_id)
                 ->orderByRaw('vinculos.orden ASC')
                 ->get();
 
@@ -36,19 +36,19 @@ class HomeController extends Controller
                 ->leftJoin('vinculos_conjuntos', 'vinculos.id', '=', 'vinculos_conjuntos.vinculo_id')
                 ->select('vinculos.*')
                 ->where('vinculos.ubicacion', '2')
-                ->where('vinculos_conjuntos.conjunto_id', '1')
+                ->where('vinculos_conjuntos.conjunto_id', Auth::user()->conjunto_id)
                 ->orderByRaw('vinculos.orden ASC')
                 ->get();
 
         $comunicados = DB::table('comunicados')
                 ->select('comunicados.*')
-                ->where('comunicados.conjunto_id', '1')
+                ->where('comunicados.conjunto_id', Auth::user()->conjunto_id)
                 ->orderByRaw('comunicados.created_at ASC')
                 ->get();
 
         $conjunto = DB::table('conjuntos')
                 ->select('conjuntos.*')
-                ->where('id', '1')
+                ->where('id', Auth::user()->conjunto_id)
                 ->first();
 
         $reservas = DB::select("SELECT 
@@ -68,9 +68,9 @@ class HomeController extends Controller
 
 
 
-        $disponible_v = DB::table('parqueaderos')->select('id')->where('conjunto_id', '1')->where('tipo_id', '12')->where('status', '1')->count();
-        $disponible_m = DB::table('parqueaderos')->select('id')->where('conjunto_id', '1')->where('tipo_id', '13')->where('status', '1')->count();
-        $disponible_b = DB::table('parqueaderos')->select('id')->where('conjunto_id', '1')->where('tipo_id', '14')->where('status', '1')->count();
+        $disponible_v = DB::table('parqueaderos')->select('id')->where('conjunto_id', Auth::user()->conjunto_id)->where('tipo_id', '12')->where('status', '1')->count();
+        $disponible_m = DB::table('parqueaderos')->select('id')->where('conjunto_id', Auth::user()->conjunto_id)->where('tipo_id', '13')->where('status', '1')->count();
+        $disponible_b = DB::table('parqueaderos')->select('id')->where('conjunto_id', Auth::user()->conjunto_id)->where('tipo_id', '14')->where('status', '1')->count();
 
         return view ('home')->with (compact('v_local', 'v_general', 'comunicados', 'conjunto', 'disponible_v', 'disponible_m', 'disponible_b', 'reservas'));
 

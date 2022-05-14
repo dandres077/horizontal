@@ -283,7 +283,7 @@
                             <div class="kt-widget5__item">
                                 <div class="kt-widget5__content">
                                     <div class="kt-widget5__pic">
-                                        <img class="kt-widget7__img" src="{{ $elementos->imagen}}" alt="">
+                                        <img class="kt-widget7__img" src="{{ env('APP_URL').$elementos->imagen}}" alt="">
                                     </div>
                                     <div class="kt-widget5__section">
                                         <a href="#" class="kt-widget5__title">
@@ -339,7 +339,7 @@
                             @foreach ($v_general as $general)
                             <div class="kt-widget4__item">
                                 <div class="kt-widget4__pic kt-widget4__pic--pic">
-                                    <img src="{{$general->imagen}}" alt="">
+                                    <img src="{{env('APP_URL').$general->imagen}}" alt="">
                                 </div>
                                 <div class="kt-widget4__info">
                                     <a href="#" class="kt-widget4__username">
@@ -360,7 +360,7 @@
                             @foreach ($v_local as $local)
                             <div class="kt-widget4__item">
                                 <div class="kt-widget4__pic kt-widget4__pic--pic">
-                                    <img src="{{$local->imagen}}" alt="">
+                                    <img src="{{env('APP_URL').$local->imagen}}" alt="">
                                 </div>
                                 <div class="kt-widget4__info">
                                     <a href="#" class="kt-widget4__username">

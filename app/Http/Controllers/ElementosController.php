@@ -6,24 +6,39 @@ use App\Elementos;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use App\Traits\Funciones;
 use DB;
 
 class ElementosController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    use Funciones;
+
     public function index()
     {
-        $data = DB::table('elementos')
+        $permiso = $this->permisos(Auth::id()); 
+        
+        if($permiso == 1)
+        {
+            $data = DB::table('elementos')
                 ->leftJoin('conjuntos', 'elementos.conjunto_id', '=', 'conjuntos.id')
                 ->select(
-                'elementos.*',
-                'conjuntos.nombre as nomconjunto')
+                        'elementos.*',
+                        'conjuntos.nombre as nomconjunto')
                 ->orderByRaw('elementos.id ASC')
                 ->get();
+        }
+        elseif($permiso == 2)
+        {
+            $data = DB::table('elementos')
+                ->leftJoin('conjuntos', 'elementos.conjunto_id', '=', 'conjuntos.id')
+                ->select(
+                        'elementos.*',
+                        'conjuntos.nombre as nomconjunto')
+                ->where('elementos.conjunto_id', Auth::user()->conjunto_id)
+                ->orderByRaw('elementos.id ASC')
+                ->get();
+        }
+        
         return view ('elementos.index')->with (compact('data'));
     }
 

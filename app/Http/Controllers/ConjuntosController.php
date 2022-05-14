@@ -6,10 +6,13 @@ use App\Conjuntos;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use App\Traits\Funciones;
 use DB;
 
 class ConjuntosController extends Controller
 {
+    use Funciones;
+
     /**
      * Display a listing of the resource.
      *
@@ -17,18 +20,38 @@ class ConjuntosController extends Controller
      */
     public function index()
     {
-        $data = DB::table('conjuntos')
+        $permiso = $this->permisos(Auth::id());
+
+        if($permiso == 1)
+        {
+            $data = DB::table('conjuntos')
                 ->leftJoin('users', 'conjuntos.user_create', '=', 'users.id')
                 ->leftJoin('users as users2', 'conjuntos.user_update', '=', 'users2.id')
                 ->select(
-                'conjuntos.*',
-                DB::raw('CONCAT(users.name, " " ,users.last) AS creo'),
-                DB::raw('CONCAT(users2.name, " " ,users2.last) AS actualizo'))
+                        'conjuntos.*',
+                        DB::raw('CONCAT(users.name, " " ,users.last) AS creo'),
+                        DB::raw('CONCAT(users2.name, " " ,users2.last) AS actualizo'))
                 ->orderByRaw('conjuntos.nombre DESC')
                 ->get();
+        }else{
+            $data = DB::table('conjuntos')
+                ->leftJoin('users', 'conjuntos.user_create', '=', 'users.id')
+                ->leftJoin('users as users2', 'conjuntos.user_update', '=', 'users2.id')
+                ->select(
+                        'conjuntos.*',
+                        DB::raw('CONCAT(users.name, " " ,users.last) AS creo'),
+                        DB::raw('CONCAT(users2.name, " " ,users2.last) AS actualizo'))
+                ->where('conjuntos.id', Auth::id())
+                ->orderByRaw('conjuntos.nombre DESC')
+                ->get();
+        }
+
+        
+
+        
 
 
-        return view ('conjuntos.index')->with (compact('data'));
+        return view ('conjuntos.index')->with (compact('data', 'permiso'));
     }
 
     /**

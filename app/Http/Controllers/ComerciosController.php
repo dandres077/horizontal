@@ -82,7 +82,7 @@ class ComerciosController extends Controller
         $comercios = DB::table('comercios_conjuntos')
                     ->leftJoin('comercios', 'comercios_conjuntos.comercio_id', '=', 'comercios.id')
                     ->select('comercios.*')
-                    ->where('comercios_conjuntos.conjunto_id', 1)
+                    ->where('comercios_conjuntos.conjunto_id', Auth::user()->conjunto_id)
                     ->where('comercios.status',  1)
                     ->orderByRaw('comercios.nombre ASC')
                     ->get();

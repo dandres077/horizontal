@@ -107,6 +107,17 @@
                                             <div class="col-9">
                                             <input type="email" class="form-control" id="email" name="email" value="{{ old('email', $user->email) }}" required="">
                                             </div>
+                                        </div>
+
+                                        <div class="form-group row">
+                                            <label class="col-3 col-form-label">Conjunto </label>
+                                            <div class="col-9">
+                                                <select class="form-control" name="conjunto_id" id="conjunto_id">
+                                                @foreach ($conjuntos as $conjunto)
+                                                    <option value="{{$conjunto->id}}" @if($user->conjunto_id==$conjunto->id) selected @endif> {{ $conjunto->nombre, $user->conjunto_id }}</option>
+                                                @endforeach
+                                                </select>
+                                            </div>
                                         </div>                                 
 
                                         <div class="form-group row">

@@ -48,7 +48,7 @@
                     <div class="kt-widget kt-widget--user-profile-2">
                         <div class="kt-widget__head">
                             <div class="kt-widget__media">
-                                <img class="kt-widget__img kt-hidden-" src="{{ $comercio->imagen}}" alt="image">
+                                <img class="kt-widget__img kt-hidden-" src="{{ env('APP_URL').$comercio->imagen}}" alt="image">
                                 <div class="kt-widget__pic kt-widget__pic--success kt-font-success kt-font-boldest kt-hidden">
                                     
                                 </div>

@@ -5,28 +5,47 @@ namespace App\Http\Controllers;
 use App\Torres;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Traits\Funciones;
 use DB;
 
 class TorresController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    use Funciones;
+
     public function index()
     {
-        $data = DB::table('torres')
+        $permiso = $this->permisos(Auth::id());
+
+        if($permiso == 1)
+        {
+            $data = DB::table('torres')
                 ->leftJoin('conjuntos', 'torres.conjunto_id', '=', 'conjuntos.id')
                 ->leftJoin('users', 'torres.user_create', '=', 'users.id')
                 ->leftJoin('users as users2', 'torres.user_update', '=', 'users2.id')
                 ->select(
-                'torres.*',
-                'conjuntos.nombre AS nomconjunto',
-                DB::raw('CONCAT(users.name, " " ,users.last) AS creo'),
-                DB::raw('CONCAT(users2.name, " " ,users2.last) AS actualizo'))
+                        'torres.*',
+                        'conjuntos.nombre AS nomconjunto',
+                        DB::raw('CONCAT(users.name, " " ,users.last) AS creo'),
+                        DB::raw('CONCAT(users2.name, " " ,users2.last) AS actualizo'))
                 ->orderByRaw('torres.nombre ASC')
                 ->get();
+        }
+        else
+        {
+            $data = DB::table('torres')
+                ->leftJoin('conjuntos', 'torres.conjunto_id', '=', 'conjuntos.id')
+                ->leftJoin('users', 'torres.user_create', '=', 'users.id')
+                ->leftJoin('users as users2', 'torres.user_update', '=', 'users2.id')
+                ->select(
+                        'torres.*',
+                        'conjuntos.nombre AS nomconjunto',
+                        DB::raw('CONCAT(users.name, " " ,users.last) AS creo'),
+                        DB::raw('CONCAT(users2.name, " " ,users2.last) AS actualizo'))
+                ->where('torres.conjunto_id', Auth::user()->conjunto_id)
+                ->orderByRaw('torres.nombre ASC')
+                ->get();
+        }
+        
 
 
         return view ('torres.index')->with (compact('data'));

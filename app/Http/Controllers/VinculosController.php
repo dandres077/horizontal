@@ -33,7 +33,7 @@ class VinculosController extends Controller
      */
     public function create()
     {
-        $conjuntos = DB::table('conjuntos')->where('status', '=', 1)->orderByRaw('nombre ASC')->get();
+        $conjuntos = DB::table('conjuntos')->where('status', 1)->orderByRaw('nombre ASC')->get();
         return view ('vinculos.create')->with (compact('conjuntos'));
     }
 
@@ -155,7 +155,7 @@ class VinculosController extends Controller
                 ->leftJoin('vinculos', 'vinculos_conjuntos.vinculo_id', '=', 'vinculos.id')
                 ->select('vinculos.*',)
                 ->where('vinculos.ubicacion', '1')
-                ->where('vinculos_conjuntos.conjunto_id', '1')
+                ->where('vinculos_conjuntos.conjunto_id', Auth::user()->conjunto_id)
                 ->orderByRaw('1, 2')
                 ->get();
 

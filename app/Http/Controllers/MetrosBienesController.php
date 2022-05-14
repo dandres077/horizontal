@@ -5,28 +5,48 @@ namespace App\Http\Controllers;
 use App\MetrosBienes;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Traits\Funciones;
 use DB;
 
 class MetrosBienesController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    use Funciones;
+    
     public function index()
     {
-        $data = DB::table('metros_bienes')
+        $permiso = $this->permisos(Auth::id()); 
+        
+        if($permiso == 1)
+        {
+            $data = DB::table('metros_bienes')
                 ->leftJoin('conjuntos', 'metros_bienes.conjunto_id', '=', 'conjuntos.id')
                 ->leftJoin('users', 'metros_bienes.user_create', '=', 'users.id')
                 ->leftJoin('users as users2', 'metros_bienes.user_update', '=', 'users2.id')
                 ->select(
-                'metros_bienes.*',
-                'conjuntos.nombre AS nomconjunto',
-                DB::raw('CONCAT(users.name, " " ,users.last) AS creo'),
-                DB::raw('CONCAT(users2.name, " " ,users2.last) AS actualizo'))
+                        'metros_bienes.*',
+                        'conjuntos.nombre AS nomconjunto',
+                        DB::raw('CONCAT(users.name, " " ,users.last) AS creo'),
+                        DB::raw('CONCAT(users2.name, " " ,users2.last) AS actualizo'))
                 ->orderByRaw('metros_bienes.nombre ASC')
                 ->get();
+        }
+        elseif($permiso == 2)
+        {
+            $data = DB::table('metros_bienes')
+                ->leftJoin('conjuntos', 'metros_bienes.conjunto_id', '=', 'conjuntos.id')
+                ->leftJoin('users', 'metros_bienes.user_create', '=', 'users.id')
+                ->leftJoin('users as users2', 'metros_bienes.user_update', '=', 'users2.id')
+                ->select(
+                        'metros_bienes.*',
+                        'conjuntos.nombre AS nomconjunto',
+                        DB::raw('CONCAT(users.name, " " ,users.last) AS creo'),
+                        DB::raw('CONCAT(users2.name, " " ,users2.last) AS actualizo'))
+                ->where('metros_bienes.conjunto_id', Auth::user()->conjunto_id)
+                ->orderByRaw('metros_bienes.nombre ASC')
+                ->get(); 
+        }
+
+        
 
 
         return view ('metrosbienes.index')->with (compact('data'));

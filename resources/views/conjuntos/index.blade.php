@@ -55,8 +55,8 @@
                     <div class="kt-portlet__head-actions">
                         <a href="{{ url ('conjuntos/create')}}" class="btn btn-brand btn-elevate btn-icon-sm">
                             <i class="la la-plus"></i>
-                            Crear
-                        </a>
+                            Crear {{ $permiso }}
+                         </a>
                     </div>
                 </div>
             </div>

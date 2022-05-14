@@ -6,7 +6,7 @@
     <head><meta charset="gb18030">
         <base href="">
         
-        <title>@yield('title', 'Kasapp')</title>
+        <title>@yield('title', 'Horizontal')</title>
         <meta content='width=device-width, initial-scale=1.0, shrink-to-fit=no' name='viewport' />
         <meta name="description" content="Updates and statistics">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -28,10 +28,10 @@
         <!--end::Global Theme Styles -->
 
         <!--begin::Layout Skins(used by all pages) -->
-        <link href="{{asset('assets/css/skins/header/base/light.css')}}" rel="stylesheet" type="text/css" />
-        <link href="{{asset('assets/css/skins/header/menu/light.css')}}" rel="stylesheet" type="text/css" />
-        <link href="{{asset('assets/css/skins/brand/light.css')}}" rel="stylesheet" type="text/css" />
-        <link href="{{asset('assets/css/skins/aside/light.css')}}" rel="stylesheet" type="text/css" />
+        <link href="{{asset('assets/css/skins/header/base/dark.css')}}" rel="stylesheet" type="text/css" />
+        <link href="{{asset('assets/css/skins/header/menu/dark.css')}}" rel="stylesheet" type="text/css" />
+        <link href="{{asset('assets/css/skins/brand/dark.css')}}" rel="stylesheet" type="text/css" />
+        <link href="{{asset('assets/css/skins/aside/dark.css')}}" rel="stylesheet" type="text/css" />
 
         <!--end::Layout Skins -->
         <link rel="shortcut icon" href="{{asset('assets/media/logos/favicon.png')}}" />
